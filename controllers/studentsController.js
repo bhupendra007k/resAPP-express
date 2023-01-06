@@ -1,36 +1,37 @@
 const Students = require("../models/Students");
 const jwt = require("jsonwebtoken");
+const LocalStorage = require('node-localstorage').LocalStorage,
 
+localStorage = new LocalStorage('./scratch');
 const studentLoginGet=async(req,res,next)=>{
 
-    res.render("student/login")
+    res.render("student/login",{message:''})
 
 }
 
 const studentLoginPost=async(req,res,next)=>{
     const {roll,dob} = req.body;
-    const student = await Students.findOne({ roll: roll });
-  
-    let jwtsecretKey = process.env.JWT_SECRET_KEY;
-    let data = { ...req.body };
-    let formattedNumber = student.dob.month.toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false
-    })
-
-    const str=`${student.dob.year}-${formattedNumber}-${student.dob.date}`
-  
-    const token = jwt.sign(data, jwtsecretKey);
-    const flag=(student.roll==roll&&str==dob)?true:false
     try {
+      const student = await Students.findOne({ roll: roll });
+      genMonth=student.dob.month+1;
+      let formattedNumber = genMonth.toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      })
+      const str=`${student.dob.year}-${formattedNumber}-${student.dob.date}`
+      const flag=(student.roll==roll&&str==dob)?true:false
       if (!flag) {
-        // res.status(500).json({ message: "user doesn't exists" });
-        res.render("student/login",{error:"dob and roll mismatched"})
+        
+        res.render("student/login",{message:"Invalid Roll number or password"})
       }
-    // res.status(200).json({ student: student, jwt: token });
-    res.render("student/view",{one:student})
+    
+    else{
+      const token = jwt.sign(data, jwtsecretKey);
+      localStorage.setItem('token',token)
+      res.render("student/view",{one:student})
+    }
     } catch (err) {
-      res.render("/error",{ error: err });
+      res.render("/error",{ error: err});
     }
 }
 

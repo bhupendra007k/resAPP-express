@@ -1,15 +1,26 @@
-<a href="/" class="btn btn-info" style="margin-top:5px;">Back</a>
+<a href="/" class="btn btn-info" style="margin-top: 5px">Back</a>
+<%if(message!=''){%>
+  <div class="d-flex justify-content-center">
+    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+      <strong>Login Failed!</strong> <%= message %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <%}%>
 <h3>Student Login</h3>
 <div class="teachLog">
   <form method="POST" class="teachForm">
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Roll no : </label>
-        <input type="number" name="roll" class="form-control" id="exampleInputPassword1" required>
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Date of Birth : </label>
-        <input type="date" name="dob" class="form-control" id="exampleInputPassword1" required>
-      </div>
-      <a><button type="submit" class="btn btn-primary">Submit</button></a>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Roll no : </label>
+      <input type="number" name="roll" class="form-control" id="exampleInputPassword1" required />
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Date of Birth :
+      </label>
+      <input type="date" name="dob" class="form-control" id="exampleInputPassword1" required />
+    </div>
+    <a><button type="submit" class="btn btn-primary">Submit</button></a>
   </form>
 </div>
